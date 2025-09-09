@@ -1,5 +1,17 @@
-RewriteEngine on
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
 
-RewriteCond %{REQUEST_FILENAME} !-d
+# 1) Если запрошенный путь — реальный файл или папка, отдать как есть
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 2) Если просят путь без расширения, а есть соответствующий .html — отдать его
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.html [L,QSA]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+
+# 3) Чистая 404 от VitePress
+ErrorDocument 404 /404.html
