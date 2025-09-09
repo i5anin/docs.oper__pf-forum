@@ -36,7 +36,7 @@
     "ofetch": "^1.4.1",
     "pinia": "^2.2.2",
     "vue": "^3.4.37",
-    "vue-i18n": "^10.0.5",
+    "vue-i18n": "^10.0.8",
     "vue-moment": "^4.1.0",
     "vue-router": "^4.4.3",
     "vue3-datepicker": "^0.4.0"
