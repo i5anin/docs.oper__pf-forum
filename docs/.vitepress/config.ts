@@ -8,25 +8,28 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
 
-  // если сайт хостится не в корне домена — обязательно укажите base
+  // Укажи base, если деплой будет не в корень
   // base: '/docs.pfforum/',
 
   vite: {
     plugins: [
       pagefindPlugin({
         locales: 'ru',
-        snippetLength: 60
+        snippetLength: 80, // немного увеличено для лучшего контекста
+        forceLanguage: 'ru' // явно указываем язык для фильтрации
       })
     ]
   },
 
   themeConfig: {
     siteTitle: 'Документация ЧПУ',
+
     nav: [
       { text: 'Главная', link: '/' },
-      { text: 'ЧАВО', link: '/faq' }, // файл docs/faq.md
+      { text: 'ЧАВО', link: '/faq' },
       { text: 'Контакты', link: '/contact' }
     ],
+
     sidebar: [
       {
         text: 'Основные разделы',
@@ -62,6 +65,10 @@ export default defineConfig({
         ]
       }
     ],
-    outline: { level: [2, 3], label: 'Содержание' }
+
+    outline: {
+      level: [2, 3],
+      label: 'Содержание'
+    }
   }
 })
