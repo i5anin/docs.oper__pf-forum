@@ -23,6 +23,33 @@ export default defineConfig({
 
   themeConfig: {
     siteTitle: 'Документация',
+    search: {
+      provider: 'local',
+      options: {
+        locales: {
+          root: {
+            translations: {
+              button: {
+                buttonText: 'Поиск',
+                buttonAriaLabel: 'Открыть поиск'
+              },
+              modal: {
+                displayDetails: 'Показать подробности',
+                resetButtonTitle: 'Очистить',
+                backButtonTitle: 'Назад',
+                noResultsText: 'Ничего не найдено',
+                footer: {
+                  selectText: 'выбрать',
+                  navigateText: 'навигация',
+                  closeText: 'закрыть'
+                }
+              },
+              placeholder: 'Поиск по документации'
+            }
+          }
+        }
+      }
+    },
 
     nav: [
       { text: 'Главная', link: '/' },
@@ -44,7 +71,8 @@ export default defineConfig({
         text: 'Инструкции оператору',
         items: [
           { text: 'Заполнение маршрутного листа', link: '/operators/6' },
-          { text: 'Операционный контроль габаритных деталей', link: '/operators/7' },
+          { text: 'По операционной установке габаритных деталей на станок', link: '/operators/7' },
+          { text: 'По операционной установке габаритных деталей на станок (токарный участок)', link: '/operators/8' },
           { text: 'Маркировка деталей серийного производства', link: '/operators/9' },
           { text: 'Снижение риска брака с глухим резьбовым отверстием', link: '/operators/12' },
           { text: 'Заполнение ЭМЛ операторами станков с ЧПУ', link: '/operators/31' },
