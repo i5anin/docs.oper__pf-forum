@@ -15,14 +15,14 @@ export default defineConfig({
     plugins: [
       pagefindPlugin({
         locales: 'ru',
-        snippetLength: 80, // немного увеличено для лучшего контекста
-        forceLanguage: 'ru' // явно указываем язык для фильтрации
+        snippetLength: 80,
+        forceLanguage: 'ru'
       })
     ]
   },
 
   themeConfig: {
-    siteTitle: 'Документация ЧПУ',
+    siteTitle: 'Документация',
 
     nav: [
       { text: 'Главная', link: '/' },
@@ -35,33 +35,58 @@ export default defineConfig({
         text: 'Основные разделы',
         items: [
           { text: 'Главная', link: '/' },
-          { text: 'ЧАВО', link: '/faq' },
-          { text: 'Организация Завода №5', link: '/production/plant5-organization' }
+          { text: 'По приёму и передаче смены операторов станков ЧПУ', link: '/operators/3' },
+          { text: 'Регламент прохождения заготовок и полуфабрикатов', link: '/operators/4' },
+          { text: 'Выявление и устранению «узких мест»', link: '/operators/5' },
         ]
       },
       {
         text: 'Инструкции оператору',
         items: [
-          { text: 'Действия при браке (ЧПУ)', link: '/production/cnc-defect' },
-          { text: 'Регламент смены', link: '/production/shift-regulations' },
-          { text: 'Охрана труда и ТБ', link: '/production/safety-osh' },
-          { text: 'Пожарная безопасность', link: '/production/fire-safety' }
+          { text: 'Заполнение маршрутного листа', link: '/operators/6' },
+          { text: 'Операционный контроль габаритных деталей', link: '/operators/7' },
+          { text: 'Маркировка деталей серийного производства', link: '/operators/9' },
+          { text: 'Снижение риска брака с глухим резьбовым отверстием', link: '/operators/12' },
+          { text: 'Заполнение ЭМЛ операторами станков с ЧПУ', link: '/operators/31' },
+          { text: 'Оформление документации и работа с ЧПУ', link: '/operators/37' }
         ]
       },
       {
         text: 'Качество и стандарты',
         items: [
-          { text: 'Контроль качества', link: '/production/quality-control' },
+          { text: 'Действия оператора и наладчика с калибрами', link: '/quality/13' },
+          { text: 'Распределение полуфабрикатов и продукции', link: '/quality/14' },
+          { text: 'Использование калибров-пробок', link: '/quality/33' },
+          { text: 'Контроль качества продукции', link: '/production/quality-control' },
           { text: '5S стандарты', link: '/production/5s-standard' },
           { text: 'TPM — обслуживание оборудования', link: '/production/tpm-maintenance' }
         ]
       },
       {
-        text: 'Логистика и улучшения',
+        text: 'Логистика и процессы',
         items: [
+          { text: 'Движение инструмента в цехе', link: '/logistics/19' },
+          { text: 'Использование крепёжной оснастки', link: '/logistics/15' },
+          { text: 'Хранение и движение заготовок', link: '/logistics/21' },
           { text: 'Склад и Kanban', link: '/production/warehouse-kanban' },
-          { text: 'CAPA: корректирующие действия', link: '/production/incident-capa' },
-          { text: 'Глоссарий', link: '/production/glossary' }
+          { text: 'CAPA: корректирующие действия', link: '/production/incident-capa' }
+        ]
+      },
+      {
+        text: 'Инструментальная комната',
+        items: [
+          { text: 'Использование инструментальной комнаты ТУ', link: '/tools/43' },
+          { text: 'Использование инструментальной комнаты ФУ', link: '/tools/44' },
+          { text: 'Правила движения управляющей программы', link: '/tools/42' }
+        ]
+      },
+      {
+        text: 'Обслуживание и охрана труда',
+        items: [
+          { text: 'Охрана труда и ТБ', link: '/production/safety-osh' },
+          { text: 'Пожарная безопасность', link: '/production/fire-safety' },
+          { text: 'Порядок выдачи спецодежды', link: '/safety/46' },
+          { text: 'Сбор и экономия СОЖ', link: '/safety/45' }
         ]
       }
     ],
