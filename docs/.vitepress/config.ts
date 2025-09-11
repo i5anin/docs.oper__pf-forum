@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
-import { pagefindPlugin } from 'vitepress-plugin-pagefind'
 import { nav, sidebar } from './menu'
+import { search } from './search'
+import { outline } from './outline'
 
 export default defineConfig({
   lang: 'ru-RU',
@@ -10,37 +11,9 @@ export default defineConfig({
   lastUpdated: true,
   themeConfig: {
     siteTitle: 'Документация',
-    search: {
-      provider: 'local',
-      options: {
-        locales: {
-          root: {
-            translations: {
-              button: {
-                buttonText: 'Поиск',
-                buttonAriaLabel: 'Открыть поиск'
-              },
-              modal: {
-                displayDetails: 'Показать подробности',
-                resetButtonTitle: 'Очистить',
-                backButtonTitle: 'Назад',
-                noResultsText: 'Ничего не найдено',
-                footer: {
-                  selectText: 'выбрать',
-                  navigateText: 'навигация',
-                  closeText: 'закрыть'
-                }
-              },
-            }
-          }
-        }
-      }
-    },
+    search,
     nav,
     sidebar,
-    outline: {
-      level: [2, 3],
-      label: 'Содержание'
-    }
+    outline
   }
 })
