@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import { nav, sidebar } from './config/menu'
 import { search } from './config/search'
 import { outline } from './config/outline'
+import { i18n } from './config/i18n'
 
 export default defineConfig({
   lang: 'ru-RU',
@@ -14,6 +15,7 @@ export default defineConfig({
     search,
     nav,
     sidebar,
-    outline
+    outline,
+    ...i18n
   }
 })
