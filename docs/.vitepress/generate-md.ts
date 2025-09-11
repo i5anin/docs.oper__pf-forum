@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { nav, sidebar } from './menu'
+import { nav, sidebar } from './config/menu'
 
 type Item = { text: string; link?: string; items?: Item[] }
 

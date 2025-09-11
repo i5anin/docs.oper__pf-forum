@@ -22,7 +22,6 @@ export const sidebar: DefaultTheme.Sidebar = [
         text: 'Основные разделы',
         items: [
             { text: 'Главная', link: '/' },
-            { text: 'По приёму и передаче смены операторов станков ЧПУ', link: '/operators/3/' },
             { text: 'Регламент прохождения заготовок и полуфабрикатов', link: '/operators/4/' },
             { text: 'Выявление и устранению «узких мест»', link: '/operators/5/' }
         ]

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
-import { nav, sidebar } from './menu'
-import { search } from './search'
-import { outline } from './outline'
+import { nav, sidebar } from './config/menu'
+import { search } from './config/search'
+import { outline } from './config/outline'
 
 export default defineConfig({
   lang: 'ru-RU',
