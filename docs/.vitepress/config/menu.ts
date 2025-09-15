@@ -2,7 +2,7 @@ import type {DefaultTheme} from 'vitepress'
 
 export const nav: DefaultTheme.NavItem[] = [
   {text: 'Главная', link: '/'},
-  {text: 'Вернуться в софт', link: 'http://soft.pfforum/', target: '_self'},
+  {  text: '🏠 Вернуться в софт', link: 'http://soft.pfforum/?eml_login', target: '_self'},
   {
     text: 'Документы',
     items: [
@@ -53,7 +53,7 @@ export const sidebar: DefaultTheme.Sidebar = [
       {text: 'Изготовление приспособлений в условиях ООО ПФ-ФОРУМ', link: '/operators/27/'},
       {text: 'Обмен и контроль давальческих калибров (АО КМЗ-Спецмаш, фрезерная группа)', link: '/operators/28/'},
       {text: 'Приёмка/хранение/работа с давальческими калибрами', link: '/operators/29/'},
-      {text: 'Сдача калибров на плановую проверку и замену', link: '/orders/30/'},
+      {text: 'Сдача калибров на плановую проверку и замену', link: '/operators/30/'},
       {text: 'Заполнение ЭМЛ операторами ЧПУ', link: '/operators/31/'},
       {text: 'Использование стеллажа с плоскопараллельными блоками', link: '/operators/32/'},
       {text: 'Самодельные калибр-пробки гладкие: изготовление/работа/хранение/утилизация', link: '/operators/33/'},
