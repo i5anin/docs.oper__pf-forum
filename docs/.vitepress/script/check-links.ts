@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const docsRoot = path.resolve(__dirname, '..', '..')
 
-function collectLinks(items: LinkItem[] = []): string[] {
+function collectLinks(items: readonly LinkItem[] = []): string[] {
   return items.flatMap(i => (i.items ? [i.link, ...collectLinks(i.items)] : [i.link]))
 }
 
@@ -27,8 +27,8 @@ function isSkippable(link: string): boolean {
 function stripQueryHash(link: string): string {
   const q = link.indexOf('?')
   const h = link.indexOf('#')
-  const cut = [q, h].filter(v => v >= 0).sort((a, b) => a - b)[0]
-  return cut >= 0 ? link.slice(0, cut) : link
+  const cuts = [q, h].filter(v => v >= 0).sort((a, b) => a - b)
+  return cuts.length ? link.slice(0, cuts[0]) : link
 }
 
 function toRelPath(raw: string): string | null {
@@ -38,8 +38,8 @@ function toRelPath(raw: string): string | null {
 }
 
 function toFsPath(rel: string): string {
-  if (rel.endsWith('.md')) return path.join(docsRoot, rel.replace(/^\//, ''))
-  return path.join(docsRoot, rel.replace(/^\//, ''), 'index.md')
+  const p = rel.replace(/^\//, '')
+  return rel.endsWith('.md') ? path.join(docsRoot, p) : path.join(docsRoot, p, 'index.md')
 }
 
 async function exists(p: string): Promise<boolean> {
@@ -52,11 +52,9 @@ async function exists(p: string): Promise<boolean> {
 }
 
 function stripFrontMatter(s: string): string {
-  if (s.startsWith('---')) {
-    const end = s.indexOf('\n---', 3)
-    if (end !== -1) return s.slice(end + 4)
-  }
-  return s
+  if (!s.startsWith('---')) return s
+  const end = s.indexOf('\n---', 3)
+  return end !== -1 ? s.slice(end + 4) : s
 }
 
 function stripMdNoise(s: string): string {
@@ -90,18 +88,27 @@ async function checkOne(link: string): Promise<Result | null> {
   return { link, filePath, status: 'ok' }
 }
 
-function parseFlags(argv: string[]) {
+function parseFlags(argv: readonly string[]) {
   return {
     failOnMissing: argv.includes('--fail-on-missing'),
     failOnEmpty: argv.includes('--fail-on-empty'),
   }
 }
 
+function uniqueSorted(items: readonly string[]): string[] {
+  return Array.from(new Set(items)).sort((a, b) => a.localeCompare(b, 'ru'))
+}
+
+function printBlock(title: string, items: readonly Result[], line: (r: Result) => string): void {
+  if (items.length === 0) return
+  console.log(`${title}: ${items.length}`)
+  items.forEach(r => console.log(line(r)))
+}
+
 async function main() {
   const { failOnMissing, failOnEmpty } = parseFlags(process.argv.slice(2))
-  const links = [...collectLinks(nav as LinkItem[]), ...collectLinks(sidebar as LinkItem[])]
-  const unique = Array.from(new Set(links))
-  const results = (await Promise.all(unique.map(checkOne))).filter(Boolean) as Result[]
+  const links = uniqueSorted([...collectLinks(nav as LinkItem[]), ...collectLinks(sidebar as LinkItem[])])
+  const results = (await Promise.all(links.map(checkOne))).filter(Boolean) as Result[]
 
   const missing = results.filter(r => r.status === 'missing')
   const empty = results.filter(r => r.status === 'empty')
@@ -111,15 +118,8 @@ async function main() {
     process.exit(0)
   }
 
-  if (missing.length > 0) {
-    console.log('Отсутствуют файлы:')
-    for (const m of missing) console.log(`→ ${m.link} (ожидалось: ${m.filePath})`)
-  }
-
-  if (empty.length > 0) {
-    console.log('Пустые файлы (нет осмысимого текста):')
-    for (const e of empty) console.log(`→ ${e.link} (путь: ${e.filePath})`)
-  }
+  printBlock('Отсутствуют файлы', missing, r => `→ ${r.link} (ожидалось: ${r.filePath})`)
+  printBlock('Пустые файлы (нет осмысимого текста)', empty, r => `→ ${r.link} (путь: ${r.filePath})`)
 
   if ((failOnMissing && missing.length > 0) || (failOnEmpty && empty.length > 0)) {
     const code = failOnMissing && failOnEmpty ? 3 : failOnMissing ? 2 : 4
