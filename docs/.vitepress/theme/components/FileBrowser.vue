@@ -1,15 +1,24 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { downloadFile, FileItem, FilesResponse } from '../../api/files'
 import { getFiles } from '../../api/files'
-
-const API_SHOW = '/api/files/show'
+import { useFilePreview } from './useFilePreview'
+import FilePreviewModal from './FilePreviewModal.vue'
 
 const loading = ref(false)
 const errorMessage = ref<string | null>(null)
 const currentBase = ref('')
 const currentPath = ref('')
 const items = ref<FileItem[]>([])
+
+const {
+  isOpen: isPreviewOpen,
+  url: previewUrl,
+  type: previewType,
+  name: previewName,
+  open: openPreview,
+  close: closePreview,
+} = useFilePreview()
 
 function normalizePath(path: string): string {
   return path.trim()
@@ -57,13 +66,11 @@ function openDirectory(item: FileItem): void {
 async function openFile(item: FileItem): Promise<void> {
   try {
     const blob = await downloadFile(item.relativePath)
-    const url = window.URL.createObjectURL(blob)
-    window.open(url, '_blank', 'noopener')
+    openPreview(blob, item.name)
   } catch (error) {
     console.error('Ошибка при открытии файла:', error)
   }
 }
-
 
 function handleItemClick(item: FileItem): void {
   if (item.type === 'dir') {
@@ -104,8 +111,20 @@ const sortedItems = computed(() =>
   }),
 )
 
+function handleKeydown(event: KeyboardEvent): void {
+  if (event.key === 'Escape' && isPreviewOpen.value) {
+    event.preventDefault()
+    closePreview()
+  }
+}
+
 onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
   load('')
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
 })
 </script>
 
@@ -187,11 +206,14 @@ onMounted(() => {
         class="file-browser__row"
         @click="handleItemClick(item)"
       >
-        <span class="file-browser__item-emoji">
-          {{ item.type === 'dir' ? '📁' : '📄' }}
-        </span>
-        <span>{{ item.name }}</span>
-
+        <td class="file-browser__cell-name">
+          <span class="file-browser__item-emoji">
+            {{ item.type === 'dir' ? '📁' : '📄' }}
+          </span>
+          <span class="file-browser__item-name">
+            {{ item.name }}
+          </span>
+        </td>
         <td class="file-browser__cell-type">
           {{ item.type === 'dir' ? 'Папка' : 'Файл' }}
         </td>
@@ -201,6 +223,14 @@ onMounted(() => {
       </tr>
       </tbody>
     </table>
+
+    <FilePreviewModal
+      :open="isPreviewOpen"
+      :url="previewUrl"
+      :type="previewType"
+      :name="previewName"
+      @close="closePreview"
+    />
   </div>
 </template>
 
@@ -251,7 +281,7 @@ onMounted(() => {
 
 .file-browser__breadcrumb {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 2px;
   margin-bottom: 8px;
@@ -313,6 +343,7 @@ onMounted(() => {
   width: 50%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
+  word-break: break-all;
 }
 
 .file-browser__row {
@@ -323,20 +354,12 @@ onMounted(() => {
   background-color: var(--vp-c-bg-mute);
 }
 
-.file-browser__item-icon {
+.file-browser__item-emoji {
   display: inline-block;
-  width: 12px;
-  height: 12px;
   margin-right: 6px;
-  border-radius: 2px;
-  background-color: var(--vp-c-text-3);
 }
 
-.file-browser__item-icon[data-kind='dir'] {
-  background-color: #f9a825;
-}
-
-.file-browser__item-icon[data-kind='file'] {
-  background-color: #42a5f5;
+.file-browser__item-name {
+  vertical-align: middle;
 }
 </style>

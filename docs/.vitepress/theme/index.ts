@@ -4,6 +4,7 @@ import SideA from './components/SideA.vue'
 import SideB from './components/SideB.vue'
 
 import FileBrowser from './components/FileBrowser.vue'
+import FilePreviewModal from './components/FilePreviewModal.vue'
 
 export default {
   extends: DefaultTheme,
@@ -13,5 +14,6 @@ export default {
     app.component('SideB', SideB)
 
     app.component('FileBrowser', FileBrowser)
+    app.component('FilePreviewModal', FilePreviewModal)
   },
 }
