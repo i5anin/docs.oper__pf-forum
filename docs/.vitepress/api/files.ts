@@ -23,3 +23,13 @@ export async function getFiles(path: string = ''): Promise<FilesResponse> {
     .then(handleResponse)
     .catch(handleApiError)
 }
+
+export async function downloadFile(path: string): Promise<Blob> {
+  return axiosInstance
+    .get('/files/show', {
+      params: { file: path },
+      responseType: 'blob',
+    })
+    .then(response => response.data)
+    .catch(handleApiError)
+}

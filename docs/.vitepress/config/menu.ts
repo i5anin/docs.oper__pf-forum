@@ -11,7 +11,8 @@ export const nav: DefaultTheme.NavItem[] = [
       {text: 'Инструментальная комната', link: '/operators/38/'},
       {text: 'Давальческие калибры и сырьё', link: '/operators/28/'},
       {text: 'Служба механиков', link: '/operators/39/'},
-      {text: 'Электронные системы (ЭМЛ/УП/видео)', link: '/operators/10/'}
+      {text: 'Электронные системы (ЭМЛ/УП/видео)', link: '/operators/10/'},
+      {text: 'Метрология', link: '/metrolog'}
     ]
   }
 ]

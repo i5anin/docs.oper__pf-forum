@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import type { FileItem, FilesResponse } from '../../api/files'
+import { downloadFile, FileItem, FilesResponse } from '../../api/files'
 import { getFiles } from '../../api/files'
 
 const API_SHOW = '/api/files/show'
@@ -54,10 +54,17 @@ function openDirectory(item: FileItem): void {
   load(item.relativePath)
 }
 
-function openFile(item: FileItem): void {
-  const url = `${API_SHOW}?file=${encodeURIComponent(item.relativePath)}`
-  window.open(url, '_blank', 'noopener')
+async function openFile(item: FileItem): Promise<void> {
+  try {
+    const blob = await downloadFile(item.relativePath)
+    const url = window.URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+  } catch (error) {
+    console.error('Ошибка при открытии файла:', error)
+  }
 }
+
+
 
 function handleItemClick(item: FileItem): void {
   if (item.type === 'dir') {
@@ -125,7 +132,7 @@ onMounted(() => {
           :disabled="!hasParent"
           @click="goToParent"
         >
-          Вверх
+          Назад
         </button>
       </div>
     </div>
