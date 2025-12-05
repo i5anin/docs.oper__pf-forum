@@ -65,7 +65,6 @@ async function openFile(item: FileItem): Promise<void> {
 }
 
 
-
 function handleItemClick(item: FileItem): void {
   if (item.type === 'dir') {
     openDirectory(item)
@@ -188,13 +187,11 @@ onMounted(() => {
         class="file-browser__row"
         @click="handleItemClick(item)"
       >
-        <td class="file-browser__cell-name">
-            <span
-              class="file-browser__item-icon"
-              :data-kind="item.type"
-            />
-          <span>{{ item.name }}</span>
-        </td>
+        <span class="file-browser__item-emoji">
+          {{ item.type === 'dir' ? '📁' : '📄' }}
+        </span>
+        <span>{{ item.name }}</span>
+
         <td class="file-browser__cell-type">
           {{ item.type === 'dir' ? 'Папка' : 'Файл' }}
         </td>
