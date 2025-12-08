@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-type PreviewType = 'image' | 'pdf' | 'other'
+type PreviewType = 'image' | 'pdf' | 'video' | 'other'
 
 const props = defineProps<{
   open: boolean

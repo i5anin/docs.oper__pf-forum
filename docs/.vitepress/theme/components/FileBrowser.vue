@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { downloadFile, FileItem, FilesResponse } from '../../api/files'
-import { getFiles } from '../../api/files'
-import { useFilePreview } from './useFilePreview'
+import { downloadFile, FileItem, FilesResponse, getFiles } from '../../api/files'
+import { useFilePreview, getEmojiForFile } from './useFilePreview'
 import FilePreviewModal from './FilePreviewModal.vue'
 
 const loading = ref(false)
@@ -31,6 +30,27 @@ function splitPath(path: string): string[] {
 
 function joinPath(segments: string[]): string {
   return segments.filter(Boolean).join('\\')
+}
+
+function formatFileSize(size: number | null | undefined): string {
+  if (size == null || size < 0) return ''
+  if (size === 0) return '0 B'
+
+  const units = ['B', 'KB', 'MB', 'GB', 'TB']
+  let value = size
+  let unitIndex = 0
+
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024
+    unitIndex += 1
+  }
+
+  const fixed =
+    value < 10 && unitIndex > 0
+      ? value.toFixed(1)
+      : value.toFixed(0)
+
+  return `${fixed} ${units[unitIndex]}`
 }
 
 const breadcrumbSegments = computed(() => splitPath(currentPath.value))
@@ -141,7 +161,7 @@ onUnmounted(() => {
           class="file-browser__button"
           @click="goToRoot"
         >
-          Корень
+          Главная
         </button>
 
         <button
@@ -165,7 +185,7 @@ onUnmounted(() => {
       </span>
 
       <template v-for="(segment, index) in breadcrumbSegments" :key="index">
-        <span class="file-browser__breadcrumb-separator">/</span>
+        <span class="file-browser__breadcrumb-separator">·</span>
         <span
           class="file-browser__breadcrumb-item"
           :class="{ 'file-browser__breadcrumb-item--active': index === breadcrumbSegments.length - 1 }"
@@ -195,8 +215,7 @@ onUnmounted(() => {
       <thead>
       <tr>
         <th class="file-browser__cell-name">Имя</th>
-        <th class="file-browser__cell-type">Тип</th>
-        <th class="file-browser__cell-path">Путь</th>
+        <th class="file-browser__cell-size">Размер</th>
       </tr>
       </thead>
       <tbody>
@@ -208,17 +227,19 @@ onUnmounted(() => {
       >
         <td class="file-browser__cell-name">
           <span class="file-browser__item-emoji">
-            {{ item.type === 'dir' ? '📁' : '📄' }}
+            {{ item.type === 'dir' ? '📁' : getEmojiForFile(item.name) }}
           </span>
           <span class="file-browser__item-name">
             {{ item.name }}
           </span>
         </td>
-        <td class="file-browser__cell-type">
-          {{ item.type === 'dir' ? 'Папка' : 'Файл' }}
-        </td>
-        <td class="file-browser__cell-path">
-          {{ item.relativePath }}
+        <td class="file-browser__cell-size">
+          <span v-if="item.type === 'file' && item.size != null">
+            {{ formatFileSize(item.size) }}
+          </span>
+          <span v-else>
+            —
+          </span>
         </td>
       </tr>
       </tbody>
@@ -331,19 +352,14 @@ onUnmounted(() => {
 }
 
 .file-browser__cell-name {
-  width: 40%;
+  width: 70%;
 }
 
-.file-browser__cell-type {
-  width: 10%;
-  text-align: left;
-}
-
-.file-browser__cell-path {
-  width: 50%;
+.file-browser__cell-size {
+  width: 30%;
+  text-align: right;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
-  word-break: break-all;
 }
 
 .file-browser__row {
@@ -362,4 +378,47 @@ onUnmounted(() => {
 .file-browser__item-name {
   vertical-align: middle;
 }
+
+
+.file-browser {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background-color: var(--vp-c-bg-soft);
+  font-size: 14px;
+
+  /* ключевое */
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1 1 auto; /* если родитель — flex-контейнер */
+}
+
+.file-browser__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+
+  /* чтобы колонки занимали всю ширину */
+  table-layout: fixed;
+}
+
+.file-browser__table th,
+.file-browser__table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+/* имя занимает всё доступное пространство */
+.file-browser__cell-name {
+  width: auto;
+}
+
+/* колонку размера фиксируем по ширине */
+.file-browser__cell-size {
+  width: 140px;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+}
+
 </style>
