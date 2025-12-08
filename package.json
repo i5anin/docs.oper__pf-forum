@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
-    "vite": "^5.4.8",
+    "vite": "^6.4.1",
     "vitepress": "^1.6.4",
     "vitepress-plugin-pagefind": "^0.4.14"
   },
