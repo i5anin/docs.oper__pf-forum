@@ -93,8 +93,8 @@
 ## 📑 Таблицы нормативного запаса
 
 <script setup lang="ts">
-import SideA from '../../.vitepress/theme/components/SideA.vue'
-import SideB from '../../.vitepress/theme/components/SideB.vue'
+import SideA from '../../.vitepress/theme/table/SideA.vue'
+import SideB from '../../.vitepress/theme/table/SideB.vue'
 </script>
 
 <SideA />
