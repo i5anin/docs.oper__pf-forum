@@ -8,7 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '..');
 
-config({ path: '.env.deploy' });
+const envPath = resolve(__dirname, '.env.deploy');
+console.log('ENV PATH:', envPath);
+
+const envResult = config({ path: envPath });
+console.log('DOTENV RESULT:', envResult);
 
 const requiredEnv = [
   'DEPLOY_HOST',
