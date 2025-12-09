@@ -151,8 +151,25 @@ onUnmounted(() => {
 <template>
   <div class="file-browser">
     <div class="file-browser__header">
-      <div class="file-browser__base" v-if="currentBase">
-        {{ currentBase }}
+      <div class="file-browser__breadcrumb">
+      <span
+        class="file-browser__breadcrumb-root"
+        :class="{ 'file-browser__breadcrumb-item--active': !breadcrumbSegments.length }"
+        @click="goToRoot"
+      >
+        /
+      </span>
+
+        <template v-for="(segment, index) in breadcrumbSegments" :key="index">
+          <span class="file-browser__breadcrumb-separator">·</span>
+          <span
+            class="file-browser__breadcrumb-item"
+            :class="{ 'file-browser__breadcrumb-item--active': index === breadcrumbSegments.length - 1 }"
+            @click="handleBreadcrumbClick(index)"
+          >
+          {{ segment }}
+        </span>
+        </template>
       </div>
 
       <div class="file-browser__controls">
@@ -175,26 +192,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div class="file-browser__breadcrumb">
-      <span
-        class="file-browser__breadcrumb-root"
-        :class="{ 'file-browser__breadcrumb-item--active': !breadcrumbSegments.length }"
-        @click="goToRoot"
-      >
-        /
-      </span>
 
-      <template v-for="(segment, index) in breadcrumbSegments" :key="index">
-        <span class="file-browser__breadcrumb-separator">·</span>
-        <span
-          class="file-browser__breadcrumb-item"
-          :class="{ 'file-browser__breadcrumb-item--active': index === breadcrumbSegments.length - 1 }"
-          @click="handleBreadcrumbClick(index)"
-        >
-          {{ segment }}
-        </span>
-      </template>
-    </div>
 
     <div class="file-browser__status" v-if="loading">
       Загрузка…
