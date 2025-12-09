@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "docs:dev": "vitepress dev docs --host 0.0.0.0 --strictPort",
+    "docs:dev": "vitepress dev docs --host 0.0.0.0 --strictPort --mode dev",
     "docs:build": "vitepress build docs",
     "docs:deploy": "vitepress build docs && node ./deploy/upload.js",
     "docs:test-connect": "node ./deploy/test-connect.js",
