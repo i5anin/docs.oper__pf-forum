@@ -8,7 +8,6 @@ const props = defineProps<{
   url: string | null
   type: PreviewType | null
   name: string | null
-  file?: Blob | null
 }>()
 
 const emit = defineEmits<{
@@ -16,11 +15,6 @@ const emit = defineEmits<{
 }>()
 
 const hasContent = computed(() => props.open && !!props.url)
-
-const isDocx = computed(() => {
-  const n = props.name?.toLowerCase() ?? ''
-  return n.endsWith('.docx')
-})
 
 function handleBackgroundClick(event: MouseEvent) {
   if (event.target === event.currentTarget) {
@@ -60,24 +54,6 @@ function handleCloseClick() {
           alt=""
           class="file-preview-modal__image"
         />
-
-        <VideoPreview
-          v-else-if="type === 'video' && url"
-          :src="url"
-        />
-
-        <DocxPreview
-          v-else-if="isDocx"
-          :file="file"
-          :src="url ?? null"
-        />
-
-        <iframe
-          v-else-if="type === 'pdf'"
-          :src="url ?? ''"
-          class="file-preview-modal__frame"
-        />
-
         <iframe
           v-else
           :src="url ?? ''"

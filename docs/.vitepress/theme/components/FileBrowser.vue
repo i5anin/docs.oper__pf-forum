@@ -4,8 +4,6 @@ import { downloadFile, FileItem, FilesResponse, getFiles } from '../../api/files
 import { useFilePreview, getEmojiForFile } from './useFilePreview'
 import FilePreviewModal from './FilePreviewModal.vue'
 
-type PreviewType = 'image' | 'pdf' | 'video' | 'other'
-
 const loading = ref(false)
 const errorMessage = ref<string | null>(null)
 const currentBase = ref('')
@@ -17,7 +15,6 @@ const {
   url: previewUrl,
   type: previewType,
   name: previewName,
-  file: previewFile,
   open: openPreview,
   close: closePreview,
 } = useFilePreview()
@@ -251,9 +248,8 @@ onUnmounted(() => {
     <FilePreviewModal
       :open="isPreviewOpen"
       :url="previewUrl"
-      :type="previewType as PreviewType | null"
+      :type="previewType"
       :name="previewName"
-      :file="previewFile"
       @close="closePreview"
     />
   </div>
@@ -266,9 +262,6 @@ onUnmounted(() => {
   padding: 12px 14px;
   background-color: var(--vp-c-bg-soft);
   font-size: 14px;
-  width: 100%;
-  box-sizing: border-box;
-  flex: 1 1 auto;
 }
 
 .file-browser__header {
@@ -350,7 +343,6 @@ onUnmounted(() => {
   width: 100%;
   border-collapse: collapse;
   margin-top: 4px;
-  table-layout: fixed;
 }
 
 .file-browser__table th,
@@ -360,11 +352,11 @@ onUnmounted(() => {
 }
 
 .file-browser__cell-name {
-  width: auto;
+  width: 70%;
 }
 
 .file-browser__cell-size {
-  width: 140px;
+  width: 30%;
   text-align: right;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
@@ -386,4 +378,47 @@ onUnmounted(() => {
 .file-browser__item-name {
   vertical-align: middle;
 }
+
+
+.file-browser {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background-color: var(--vp-c-bg-soft);
+  font-size: 14px;
+
+  /* ключевое */
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1 1 auto; /* если родитель — flex-контейнер */
+}
+
+.file-browser__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+
+  /* чтобы колонки занимали всю ширину */
+  table-layout: fixed;
+}
+
+.file-browser__table th,
+.file-browser__table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+/* имя занимает всё доступное пространство */
+.file-browser__cell-name {
+  width: auto;
+}
+
+/* колонку размера фиксируем по ширине */
+.file-browser__cell-size {
+  width: 140px;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+}
+
 </style>
