@@ -5,6 +5,8 @@ import SideB from './components/SideB.vue'
 
 import FileBrowser from './components/FileBrowser.vue'
 import FilePreviewModal from './components/FilePreviewModal.vue'
+import VideoPreview from './components/VideoPreview.vue'
+import DocxPreview from './components/DocxPreview.vue'
 
 export default {
   extends: DefaultTheme,
@@ -15,5 +17,8 @@ export default {
 
     app.component('FileBrowser', FileBrowser)
     app.component('FilePreviewModal', FilePreviewModal)
+
+    app.component('VideoPreview', VideoPreview)
+    app.component('DocxPreview', DocxPreview)
   },
 }
