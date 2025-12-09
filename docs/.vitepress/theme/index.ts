@@ -1,7 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 
-import SideA from './components/SideA.vue'
-import SideB from './components/SideB.vue'
+import SideA from './table/SideA.vue'
+import SideB from './table/SideB.vue'
 
 import FileBrowser from './components/FileBrowser.vue'
 import FilePreviewModal from './components/FilePreviewModal.vue'
