@@ -9,6 +9,9 @@ export default defineConfig({
   description: 'Регламенты и инструкции для операторов станков ЧПУ',
   cleanUrls: true,
   lastUpdated: true,
+  vite: {
+    envDir: '../'
+  },
   themeConfig: {
     siteTitle: 'Документация',
     search,
