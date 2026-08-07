@@ -2,7 +2,7 @@ import type {DefaultTheme} from 'vitepress'
 
 export const nav: DefaultTheme.NavItem[] = [
   {text: 'Главная', link: '/'},
-  {  text: '🏠 Вернуться в софт', link: '//soft.pfforum/?eml_login', target: '_self'},
+  {  text: '🏠 Вернуться в СОФТ', link: '//soft.pfforum/?eml_login', target: '_self'},
   {
     text: 'Документы',
     items: [
