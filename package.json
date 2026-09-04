@@ -19,7 +19,7 @@
     "vitepress-plugin-pagefind": "^0.4.14"
   },
   "dependencies": {
-    "axios": "^1.13.2",
+    "axios": "^1.20.0",
     "mammoth": "^1.11.0",
     "pdf-parse": "^2.4.5"
   }
